@@ -6,6 +6,7 @@ import { FaSearch, FaTrash, FaEye, FaFileImport, FaFileExport } from 'react-icon
 import { MdModeEditOutline } from 'react-icons/md';
 import { useState } from 'react';
 import AddEmployee from '@/model/employee/AddEmployee'; 
+import ViewInstallment from '@/model/installment/viewInstallment';
 import Papa from 'papaparse';
 
 const Employees = () => {
@@ -14,6 +15,7 @@ const Employees = () => {
     const [currentPage, setCurrentPage] = useState(1);
     const [itemsPerPage, setItemsPerPage] = useState(10);
     const [showAddEmployee, setShowAddEmployee] = useState(false);
+    const [viewInstallment, setViewInstallment] = useState(null); // New state for viewing installment
 
     // Filter data based on search term
     const filteredData = employeesTableData.filter(contact =>
@@ -76,6 +78,11 @@ const Employees = () => {
         link.click();
         document.body.removeChild(link);
     };
+
+    const handleView = (item) => {
+        setViewInstallment(item);
+    };
+
     return (
         <div className="flex flex-col bg-white h-screen mt-4 mx-4 md:mt-2 md:mx-2">
             <h1 className={`text-2xl mb-2 text-left mb-4`}>Employees</h1>
@@ -172,14 +179,14 @@ const Employees = () => {
                                         </button>
 
                                         <button
-                                            onClick={() => onView(item)} 
+                                            onClick={() => handleView(item)} 
                                             className="text-white bg-[#270150] rounded-full px-1 py-1 transition-all duration-300 hover:scale-[1.03] cursor-pointer"
                                         >
                                             <FaEye />
                                         </button>
 
                                         <button
-                                            onClick={() => onDelete(item)}
+                                            onClick={() => setViewInstallment(item)}
                                             className="text-red-600 bg-red-200 rounded-full px-1 py-1 transition-all duration-300 hover:scale-[1.03] cursor-pointer"
                                         >
                                             <FaTrash />
@@ -236,6 +243,10 @@ const Employees = () => {
 
             {showAddEmployee && (
                 <AddEmployee visible={showAddEmployee} onClose={handleModalClose} />
+            )}
+
+            {viewInstallment && (
+                <ViewInstallment employee={viewInstallment} visible={true} onClose={() => setViewInstallment(null)} />
             )}
         </div>
     );

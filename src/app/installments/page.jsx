@@ -2,10 +2,11 @@
 
 import { installmentsTableHeading } from '@/data/tableHeading';
 import { installmentsTableData } from '@/data/constData';
-import { FaSearch, FaTrash, FaEye, FaFileImport, FaFileExport } from 'react-icons/fa'; // Added FaEye icon import
+import { FaSearch, FaEye, FaFileImport, FaFileExport } from 'react-icons/fa'; // Added FaEye icon import
 import { MdModeEditOutline } from 'react-icons/md';
 import { useState } from 'react';
 import AddInstallment from '@/model/installment/AddInstallment';
+import ViewInstallment from '@/model/installment/viewInstallment';
 import { DatePicker } from 'antd';
 const { RangePicker } = DatePicker;
 import Papa from 'papaparse';
@@ -18,6 +19,7 @@ const Installments = () => {
     const [currentPage, setCurrentPage] = useState(1);
     const [itemsPerPage, setItemsPerPage] = useState(10);
     const [showAddInstallment, setShowAddInstallment] = useState(false);
+    const [viewInstallment, setViewInstallment] = useState(null); // New state for viewing installment
 
     // Filter data based on search term, date range, and status
     const filteredData = installmentsTableData.filter(installment => {
@@ -63,11 +65,9 @@ const Installments = () => {
         setShowAddInstallment(true);
     };
 
-
     const handleModalClose = () => {
         setShowAddInstallment(false);
     };
-
 
     const handleFilterStatus = (status) => {
         setFilterStatus(status);
@@ -95,6 +95,10 @@ const Installments = () => {
         document.body.appendChild(link);
         link.click();
         document.body.removeChild(link);
+    };
+
+    const handleViewInstallment = (installment) => {
+        setViewInstallment(installment);
     };
 
     return (
@@ -208,8 +212,7 @@ const Installments = () => {
                             currentItems.map((item, index) => (
                                 <tr
                                     key={index}
-
-                                    className={`hover:bg-[#270150] hover:text-white transition duration-200 border`}
+                                    className={`hover:bg-[#270150] hover:text-white transition duration-200 border ${item.status === 'Unpaid' ? 'text-red-600' : ''}`}
                                 >
                                     {Object.values(item).map((value, idx) => (
                                         <td key={idx} className="px-4 py-2 border-b text-left">
@@ -226,18 +229,10 @@ const Installments = () => {
                                         </button>
 
                                         <button
-                                            onClick={() => onView(item)}
+                                            onClick={() => handleViewInstallment(item)}
                                             className="text-white bg-[#270150] rounded-full px-1 py-1 transition-all duration-300 hover:scale-[1.03] cursor-pointer"
                                         >
                                             <FaEye />
-                                        </button>
-
-
-                                        <button
-                                            onClick={() => onDelete(item)}
-                                            className="text-red-600 bg-red-200 rounded-full px-1 py-1 transition-all duration-300 hover:scale-[1.03] cursor-pointer"
-                                        >
-                                            <FaTrash />
                                         </button>
 
                                     </td>
@@ -291,6 +286,10 @@ const Installments = () => {
 
             {showAddInstallment && (
                 <AddInstallment visible={showAddInstallment} onClose={handleModalClose} />
+            )}
+
+            {viewInstallment && (
+                <ViewInstallment employee={viewInstallment} visible={true} onClose={() => setViewInstallment(null)} />
             )}
         </div>
 
