@@ -2,7 +2,7 @@
 
 import { employeesTableHeading } from '@/data/tableHeading';
 import { employeesTableData } from '@/data/constData';
-import { FaSearch, FaTrash, FaEye, FaFileImport, FaFileExport } from 'react-icons/fa'; // Added FaFileImport and FaFileExport icon imports
+import { FaSearch, FaTrash, FaEye, FaFileImport, FaFileExport } from 'react-icons/fa'; 
 import { MdModeEditOutline } from 'react-icons/md';
 import { useState } from 'react';
 import AddEmployee from '@/model/employee/AddEmployee'; 
@@ -112,12 +112,7 @@ const Employees = () => {
                             <option value={100}>100</option>
                         </select>
                     </div>
-                    <button
-                        className="px-4 py-2 bg-[#270150] text-white rounded-lg hover:bg-[#1a0136] transition duration-200"
-                        onClick={handleAddEmployeeClick}
-                    >
-                        Add Employee
-                    </button>
+                  
                     <button
                         className="px-4 py-2 bg-[#270150] text-white rounded-lg hover:bg-[#1a0136] transition duration-200 flex items-center gap-2"
                         onClick={() => { }}
@@ -131,6 +126,12 @@ const Employees = () => {
                     >
                         <FaFileExport />
                         Export
+                    </button>
+                    <button
+                        className="px-4 py-2 bg-[#270150] text-white rounded-lg hover:bg-[#1a0136] transition duration-200"
+                        onClick={handleAddEmployeeClick}
+                    >
+                        Add Employee
                     </button>
                 </div>
             </div>
