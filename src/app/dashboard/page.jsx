@@ -1,8 +1,14 @@
 import React from 'react';  
 import CashFlowChart from '@/charts/CashFlowChart'; 
+import CircleChart from '@/charts/CircleChart'; // Assuming the import path for CircleChart
 import { FaUsers, FaReceipt, FaMoneyBillWave } from 'react-icons/fa';
 
 const Dashboard = () => {
+  const unpaidInstallments = [
+    { name: 'John Doe', amount: '$500', dueDate: '2023-10-15' },
+    { name: 'Jane Smith', amount: '$750', dueDate: '2023-10-20' },
+    { name: 'Alice Johnson', amount: '$300', dueDate: '2023-10-25' },
+  ];
 
   return (
     <div className="flex flex-col mt-4 mx-4 md:mt-2 md:mx-2">
@@ -36,16 +42,42 @@ const Dashboard = () => {
 
           </div>
         </div>
-        <div className="">
-          <div className="bg-white p-6 rounded-xl  border border-gray-200 mb-6">
-            <h2 className="text-lg mb-1 text-center">Cashflow Forecast</h2>
-            <div className="h-60 bg-white shadow-inner mb-5">
-              <CashFlowChart />
-            </div>
-          </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div className="bg-white p-6 rounded-xl border border-gray-200 mb-6">
+          <h2 className="text-lg mb-1 text-center">Cashflow Forecast</h2>
+          <div className="h-60 bg-white shadow-inner mb-5">
+            <CashFlowChart />
           </div>
         </div>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div className="bg-white p-6 rounded-xl border border-gray-200 mb-6">
+            <h2 className="text-lg mb-1 text-center font-bold">Unpaid Installments This Month</h2>
+            <table className="min-w-full bg-white">
+              <thead className="bg-gray-200 text-black">
+                <tr>
+                  <th className="px-4 py-2 text-left">Name</th>
+                  <th className="px-4 py-2 text-left">Amount</th>
+                  <th className="px-4 py-2 text-left">Due Date</th>
+                </tr>
+              </thead>
+              <tbody>
+                {unpaidInstallments.map((item, index) => (
+                  <tr key={index} className="hover:bg-[#270150] hover:text-white transition duration-200 border">
+                    <td className="px-4 py-2 border-b text-left">{item.name}</td>
+                    <td className="px-4 py-2 border-b text-left">{item.amount}</td>
+                    <td className="px-4 py-2 border-b text-left">{item.dueDate}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+          <div className="bg-white p-6 rounded-xl border border-gray-200 mb-6">
+            <h2 className="text-lg mb-1 text-center font-bold">Circle Chart</h2>
+            <div className="h-[300px] bg-white shadow-inner mb-5">
+              <CircleChart />
+            </div>
+          </div>
+        </div>
+        
       </div>
     </div>
   );
