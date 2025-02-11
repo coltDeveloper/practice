@@ -2,15 +2,13 @@
 
 import { employeesTableHeading } from '@/data/tableHeading';
 import { employeesTableData } from '@/data/constData';
-import { FaSearch, FaTrash, FaEye } from 'react-icons/fa'; // Added FaEye icon import
+import { FaSearch, FaTrash, FaEye, FaFileImport, FaFileExport } from 'react-icons/fa'; // Added FaFileImport and FaFileExport icon imports
 import { MdModeEditOutline } from 'react-icons/md';
 import { useState } from 'react';
 import AddEmployee from '@/model/employee/AddEmployee'; 
+import Papa from 'papaparse';
 
-
-
-
-function Employees() {
+const Employees = () => {
     const [searchTerm, setSearchTerm] = useState('');
 
     const [currentPage, setCurrentPage] = useState(1);
@@ -57,7 +55,27 @@ function Employees() {
     const handleModalClose = () => {
         setShowAddEmployee(false);
     };
-
+    const handleExportCSV = () => {
+        const csvData = employeesTableData.map(employee => ({
+            'Employee ID': employee.employeeId,
+            'Name': employee.name,
+            'Email': employee.email,
+            'Phone': employee.phone,
+            'Address': employee.address,
+            'Company': employee.company,
+            'Status': employee.status
+        }));
+    
+        const csv = Papa.unparse(csvData);
+        const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+        const url = URL.createObjectURL(blob);
+        const link = document.createElement('a');
+        link.href = url;
+        link.setAttribute('download', 'employees.csv');
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+    };
     return (
         <div className="flex flex-col bg-white h-screen mt-4 mx-4 md:mt-2 md:mx-2">
             <h1 className={`text-2xl mb-2 text-left mb-4`}>Employees</h1>
@@ -99,6 +117,20 @@ function Employees() {
                         onClick={handleAddEmployeeClick}
                     >
                         Add Employee
+                    </button>
+                    <button
+                        className="px-4 py-2 bg-[#270150] text-white rounded-lg hover:bg-[#1a0136] transition duration-200 flex items-center gap-2"
+                        onClick={() => { }}
+                    >
+                        <FaFileImport />
+                        Import
+                    </button>
+                    <button
+                        className="px-4 py-2 bg-[#270150] text-white rounded-lg hover:bg-[#1a0136] transition duration-200 flex items-center gap-2"
+                        onClick={handleExportCSV}
+                    >
+                        <FaFileExport />
+                        Export
                     </button>
                 </div>
             </div>

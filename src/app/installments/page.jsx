@@ -9,7 +9,7 @@
     import { DatePicker } from 'antd';
     const { RangePicker } = DatePicker;
 
-    function Installments() {
+    const Installments = () => {
         const [searchTerm, setSearchTerm] = useState('');
         const [dateRange, setDateRange] = useState([null, null]);
         const [filterStatus, setFilterStatus] = useState(''); // New state for filter status
